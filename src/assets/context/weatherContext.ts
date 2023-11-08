@@ -1,4 +1,4 @@
-import { createToaster } from '@meforma/vue-toaster';
+import {useToast} from 'vue-toast-notification';
 import { API_KEY, BASE_URL } from '@/constants';
 import { defineStore } from 'pinia';
 import { onMounted, ref, watch } from 'vue';
@@ -10,10 +10,7 @@ export const weatherContext = defineStore('weather', () => {
   const weatherInfo = ref(null);
   const favoriteCities = ref('');
 
-  const toaster = createToaster({
-    position: 'top-right',
-    type: 'warning',
-  });
+  const toaster = useToast();
 
   const setCurrentCity = (city: string) => {
     currentCity.value = city;
@@ -30,15 +27,15 @@ export const weatherContext = defineStore('weather', () => {
 
   const addToFavorites = () => {
     if (favoriteCities.value.includes(currentCity.value)) {
-      toaster.show('This city is already in favorites');
+      toaster.warning('This city is already in favorites');
     } else if (favoriteCities.value.split(',').length >= 5) {
-      toaster.show('The maximum number of selected cities is no more than 5');
+      toaster.warning('The maximum number of selected cities is no more than 5');
     } else if (favoriteCities.value.length === 0) {
       favoriteCities.value += currentCity.value;
-      toaster.show(`${capitalizeFirstLetter(currentCity.value)} added to favorites`);
+      toaster.success(`${capitalizeFirstLetter(currentCity.value)} added to favorites`);
     } else {
       favoriteCities.value += `, ${currentCity.value}`;
-      toaster.show(`${currentCity.value} added to favorites`);
+      toaster.success(`${capitalizeFirstLetter(currentCity.value)} added to favorites`);
     }
 
     localStorage.setItem("favorite_cities", favoriteCities.value);
