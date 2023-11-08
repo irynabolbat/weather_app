@@ -4,15 +4,19 @@
   import { API_KEY, BASE_URL } from '@/constants';
   import { ref, onMounted } from 'vue';
 
+  type WeatherInfo = {
+    name: string;
+  };
+
   const weatherStore = weatherContext();
 
-  const citiesWeatherInfo = ref([]);
+  const citiesWeatherInfo = ref<WeatherInfo[]>([]);
   const cities = weatherStore.favoriteCities.split(',');
 
   const getFavWeather = async (city: string) => {
     try {
       const response = await fetch(`${BASE_URL}?q=${city}&units=metric&appid=${API_KEY}`);
-      const data = await response.json();
+      const data = await response.json() as WeatherInfo;
       citiesWeatherInfo.value.push(data);
     } catch (error) {
       console.error('City is not found', error);
