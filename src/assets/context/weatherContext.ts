@@ -7,7 +7,7 @@ import { capitalizeFirstLetter } from '@/utils';
 export const weatherContext = defineStore('weather', () => {
   const allCities = ref([]);
   const currentCity = ref('Kyiv');
-  const weatherInfo = ref(null);
+  const weatherInfo = ref<string | null>(null);
   const favoriteCities = ref('');
 
   const toaster = useToast();
